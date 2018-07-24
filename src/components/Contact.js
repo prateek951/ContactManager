@@ -12,10 +12,14 @@ class Contact extends Component {
     bindEvents(){
         // add all the bindings here in the bindEvents
         this.onShowClick = this.onShowClick.bind(this);
+        this.onDeleteClick = this.onDeleteClick.bind(this);
     }
     onShowClick(e) {
         e.preventDefault();
         this.setState({...this.state,showContactInfo: !this.state.showContactInfo});
+    }
+    onDeleteClick(){
+        this.props.deleteClickHandler();
     }
 
   render() {
@@ -23,7 +27,8 @@ class Contact extends Component {
     return (
       <div className="card card-body mb-3">
         <h4>
-          {name} <i className="fas fa-sort-down" onClick={this.onShowClick}/>
+          {name} <i className="fas fa-sort-down" onClick={this.onShowClick} style={{cursor: 'pointer'}}/>
+          <i className="fas fa-times" style={{cursor: 'pointer',float: 'right',color: 'red'}} onClick={this.onDeleteClick}></i>
         </h4>
         {this.state.showContactInfo? 
         (
@@ -37,7 +42,8 @@ class Contact extends Component {
   }
 }
 Contact.propTypes = {
-  contact: PropTypes.object.isRequired
+  contact: PropTypes.object.isRequired,
+  deleteClickHandler : PropTypes.func.isRequired,
 };
 
 export default Contact;

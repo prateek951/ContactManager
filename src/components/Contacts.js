@@ -6,29 +6,31 @@ export default class Contacts extends Component {
     super();
     this.state = {
       contacts: [
-        {
+        { id : 1,
           name: "John Doe",
           email: "me@example.com",
-          phone: "555-555-555",
+          phone: "555-555-555"
         },
-        {
+        { id : 2,
           name: "Prateek Madaan",
           email: "prince.cenation@gmail.com",
-          phone: "222-222-222",
+          phone: "222-222-222"
         },
-        {
+        { id : 3,
           name: "Somewhere",
           email: "some@where.com",
-          phone: "232-232-232",
+          phone: "232-232-232"
         }
-      ],
+      ]
     };
-    this.bindEvents();
   }
-  bindEvents = () => {
 
-    };
-  
+ deleteClickHandler(id) {
+    const { contacts } = this.state;        //original 
+    const filteredcontacts = contacts.filter(contact => contact.id !== id); //copy removed id one
+    //assign copy to original (immutable manner)
+    this.setState({contacts: filteredcontacts});
+}
 
   render() {
     // js
@@ -45,6 +47,7 @@ export default class Contacts extends Component {
         <Contact
           key={index}
           contact={contact}
+          deleteClickHandler = {this.deleteClickHandler.bind(this,contact.id)}
         />
       ));
     } else {
