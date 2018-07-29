@@ -1,22 +1,32 @@
-import React, { Component } from "react";
-import axios from "axios";
-//Create Context
+import React, { Component } from 'react';
+import axios from 'axios';
 
 const Context = React.createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "DELETE_CONTACT":
+    case 'DELETE_CONTACT':
       return {
         ...state,
         contacts: state.contacts.filter(
           contact => contact.id !== action.payload
         )
       };
-    case "ADD_CONTACT":
-      const contacts = [...state.contacts];
-      contacts.push(action.payload.contact);
-      return { ...state, contacts: contacts };
+    case 'ADD_CONTACT':
+      return {
+        ...state,
+        contacts: [action.payload, ...state.contacts]
+      };
+    case 'UPDATE_CONTACT':
+      return {
+        ...state,
+        contacts: state.contacts.map(
+          contact =>
+            contact.id === action.payload.id
+              ? (contact = action.payload)
+              : contact
+        )
+      };
     default:
       return state;
   }
@@ -27,11 +37,11 @@ export class Provider extends Component {
     contacts: [],
     dispatch: action => this.setState(state => reducer(state, action))
   };
+
   async componentDidMount() {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/posts"
-    );
-    this.setState({ contacts: response.data });
+    const res = await axios.get('https://jsonplaceholder.typicode.com/users');
+
+    this.setState({ contacts: res.data });
   }
 
   render() {
@@ -43,5 +53,4 @@ export class Provider extends Component {
   }
 }
 
-//Export consumer here
 export const Consumer = Context.Consumer;
