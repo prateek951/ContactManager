@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AddContact from "./components/AddContact";
 import About from "./components/About";
 import NotFound from "./components/NotFound";
+import Test from "./components/test/Test";
 
 class App extends Component {
   render() {
@@ -15,13 +16,14 @@ class App extends Component {
       <Provider>
         <Router>
           <div className="App">
-            <Header brand="Contact Manager"/>
+            <Header brand="Contact Manager" />
             <div className="container">
               <Switch>
                 <Route exact path="/" component={Contacts} />
-                <Route exact path="/contact/add" component={AddContact}/>
-                <Route exact path="/about" component={About}/>
-                <Route component={NotFound}/>
+                <Route exact path="/contact/add" component={AddContact} />
+                <Route exact path="/about" component={About} />
+                <Route exact path='/test' component={Test}/>
+                <Route component={NotFound} />
               </Switch>
             </div>
           </div>

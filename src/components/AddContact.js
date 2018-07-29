@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Consumer } from "../context";
 import uuid from "uuid";
 import TextInputGroup from "./TextInputGroup";
+import Axios from "axios";
 
 class AddContact extends Component {
   //init state for the form
@@ -14,7 +15,7 @@ class AddContact extends Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  onSubmit = (dispatch, e) => {
+  onSubmit = async (dispatch, e) => {
     e.preventDefault();
     const { name, email, phone } = this.state;
     if (name === "") {
@@ -30,13 +31,17 @@ class AddContact extends Component {
       return;
     }
     const newcontact = { name, email, phone, id: uuid() };
-    dispatch({ type: "ADD_CONTACT", payload: newcontact });
+    const response = await Axios.post(
+      "https://jsonplaceholder.typicode.com/users/",
+      newcontact
+    );
+    dispatch({ type: "ADD_CONTACT", payload: response.data });
     this.setState({ name: "", email: "", phone: "", errors: {} });
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
 
   render() {
-    const { email, name, phone, errors} = this.state;
+    const { email, name, phone, errors } = this.state;
 
     return (
       <Consumer>
